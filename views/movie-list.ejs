@@ -1,0 +1,28 @@
+<%include menu %>
+
+<h3>Add Movie</h3>
+<form method="post" action="/movie/add">
+  <label>Movie Title</label><br>
+  <input type="text" name="title">
+  
+  <br>
+  <label>Year</label><br>
+  <input required type="text" name="year">
+  
+  <br>
+  <label>Tagline</label><br>
+  <input required type="text" name="tagline">
+  
+  <br><br>
+  <input required type="submit" value="submit">
+</form>
+
+
+<hr>
+
+<h3>Movies</h3>
+<ul>
+<% movies.forEach(function(movie) { %>
+   <li><a href = "/movie/<%= movie.id %>"><%= movie.title %></a></li>
+<% }) %>
+</ul>

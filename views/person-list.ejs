@@ -1,0 +1,27 @@
+<%include menu %>
+
+<h3>Add Person</h3>
+<form method="post" action="/person/add">
+  <label>Person Name</label><br>
+  <input type="text" name="name">
+  <br>
+  
+  <label>Age</label><br>
+  <input required type="text" name="age">
+  <br>
+  
+  <label>Born</label><br>
+  <input required type="text" name="born">
+  
+  <br><br>
+  <input required type="submit" value="submit">
+</form>
+
+<hr>
+
+<h3>Persons</h3>
+<ul>
+<% persons.forEach(function(person) { %>
+   <li><a href = "/person/<%= person.id %>"><%= person.name %></a></li>
+<% }) %>
+</ul>

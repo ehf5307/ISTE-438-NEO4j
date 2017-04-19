@@ -21,19 +21,18 @@ var session = driver.session();
 
 app.get('/',function(req,res) {
   session
-    .run('MATCH(n:Movie) RETURN n LIMIT 40')
+    .run('MATCH(n:Movie) RETURN n')
     .then(function(result) {
       var movieArr = [];
       result.records.forEach(function(record) {
         movieArr.push({
           id: record._fields[0].identity.low,
-          title: record._fields[0].properties.title,
-          year: record._fields[0].properties.released
+          title: record._fields[0].properties.title
         });
       });
 
       session
-        .run('MATCH (n:Person) RETURN n LIMIT 25')
+        .run('MATCH (n:Person) RETURN n')
         .then(function(result2){
            var personArr = [];
            result2.records.forEach(function(record) {
@@ -51,6 +50,55 @@ app.get('/',function(req,res) {
         .catch(function(err) {
           console.log(err);
         });
+
+    })
+    .catch(function(err) {
+       console.log(err);
+    });
+});
+
+app.get('/movies',function(req,res) {
+  session
+    .run('MATCH(n:Movie) RETURN n ')
+    .then(function(result) {
+      var movieArr = [];
+      result.records.forEach(function(record) {
+        movieArr.push({
+          id: record._fields[0].identity.low,
+          title: record._fields[0].properties.title,
+          year: record._fields[0].properties.released
+        });
+		
+      });
+     
+	 
+		res.render('movie-list', {
+		 movies: movieArr
+	   });
+
+    })
+    .catch(function(err) {
+       console.log(err);
+    });
+});
+
+app.get('/persons',function(req,res) {
+  session
+    .run('MATCH(n:Person) RETURN n ')
+    .then(function(result) {
+      var personArr = [];
+      result.records.forEach(function(record) {
+        personArr.push({
+		   id: record._fields[0].identity.low,
+		   name: record._fields[0].properties.name
+        });
+		
+      });
+     
+	 
+		res.render('person-list', {
+		 persons: personArr
+	   });
 
     })
     .catch(function(err) {
@@ -125,7 +173,7 @@ app.post('/movie/:movieID/delete',function(req,res) {
   session
 	.run('MATCH (n:Movie) where ID(n)='+id+' detach delete n')
     .then(function(result) {
-      res.redirect('/');
+      res.redirect('/movies');
       session.close();
     })
     .catch(function(err) {
@@ -138,7 +186,7 @@ app.post('/person/:personID/delete',function(req,res) {
   session
 	.run('MATCH (n:Person) where ID(n)='+id+' detach delete n')
     .then(function(result) {
-      res.redirect('/');
+      res.redirect('/persons');
       session.close();
     })
     .catch(function(err) {
@@ -212,10 +260,11 @@ app.get('/person/:personID',function(req,res) {
 app.post('/movie/add',function(req,res) {
   var title = req.body.title;
   var year = req.body.year;
+  var tagline = req.body.tagline;
   session
-    .run('CREATE (n:Movie {title:{titleParam},released:{yearParam}}) RETURN n.title', {titleParam:title,yearParam:year})
+    .run('CREATE (n:Movie {title:{titleParam},released:{yearParam}, tagline:{taglineParam}}) RETURN n.title', {titleParam:title,yearParam:year, taglineParam:tagline})
     .then(function(result) {
-      res.redirect('/');
+      res.redirect('/movies');
       session.close();
     })
     .catch(function(err) {
@@ -283,10 +332,17 @@ app.post('/movie/actor/add',function(req,res) {
 
 app.post('/person/add',function(req,res) {
   var name = req.body.name;
+  var age = req.body.age;
+  var born = req.body.born;
   session
-    .run('CREATE (n:Person {name:{nameParam}}) RETURN n.name', {nameParam:name})
+    .run('CREATE (n:Person {name:{nameParam}, age:{ageParam}, born:{bornParam}}) RETURN n.name', 
+		{
+			nameParam:name,
+			ageParam:age,
+			bornParam:born,
+		})
     .then(function(result) {
-      res.redirect('/');
+      res.redirect('/persons');
       session.close();
     })
     .catch(function(err) {
