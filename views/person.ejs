@@ -1,0 +1,43 @@
+<h3><%= person.name %></h3>
+<h4>Born: <%= person.born %> </h4>
+<h4>Age: <%= person.age %> </h4>
+
+<h4>Movies Directed:</h4>
+<ul>
+<% directed.forEach(function(dir) { %>
+   <li><a href = "/movie/<%= dir.id %>" > <%= dir.title %> </a></li>
+<% }) %>
+</ul>
+
+
+<h4>Movies Acted In:</h4>
+<ul>
+<% acted.forEach(function(act) { %>
+   <li><a href = "/movie/<%= act.id %>"><%= act.title %></a></li>
+<% }) %>
+</ul>
+
+
+<hr>
+<h3>Update Person</h3>
+<form method="post" action="/person/<%= person.id %>/update">
+  <label>Name</label><br>
+  <input required type="text" name="name" value = "<%= person.name %>">
+  
+  <br>
+  <label>Born</label><br>
+  <input required type="text" name="born" value = "<%= person.born %>">
+  
+  <br>
+  <label>Age</label><br>
+  <input required type="text" name="age" value = "<%= person.age %>">
+    
+  <br><br>
+  <input type="submit" value="submit">
+</form>
+
+<hr>
+<h3>Delete Person</h3>
+<form method="post" action="/person/<%= person.id %>/delete">
+  <input type="submit" value="Delete">
+</form>
