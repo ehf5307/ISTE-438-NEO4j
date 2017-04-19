@@ -1,18 +1,49 @@
-<ul>
-<li><a href="/movies"> Movies </a></li>
-<li><a href="/persons"> People </a></li>
-<li><a href="/relationships"> Relationships </a></li>
-<ul>
-
-
+<%include menu %>
 
 <h3>Add Actor to Movie</h3>
 <form method="post" action="/movie/actor/add">
-  <label>Movie Title</label><br>
-  <input type="text" name="title">
+  <label>Movie</label><br>
+  <select name="movie">
+	<option>---</option>
+	<% movies.forEach(function(movie) { %>
+	   <option value ="<%= movie.id %>"> <%= movie.title %> </option>
+	<% }) %>
+	</select>
+  
   <br>
-  <label>Actor Name</label><br>
-  <input type="text" name="name">
+  <label>Actor</label><br>
+  <select name="person">
+	<option>---</option>
+	<% persons.forEach(function(person) { %>
+	   <option value ="<%= person.id %>"> <%= person.name %> </option>
+	<% }) %>
+	</select>
+  
+  <br><br>
+  <input type="submit" value="submit">
+</form>
+
+<hr>
+
+<h3>Add Director to Movie</h3>
+<form method="post" action="/movie/director/add">
+  <label>Movie</label><br>
+  <select name="movie">
+	<option>---</option>
+	<% movies.forEach(function(movie) { %>
+	   <option value ="<%= movie.id %>"> <%= movie.title %> </option>
+	<% }) %>
+	</select>
+  
+  <br>
+  <label>Director</label><br>
+  <select name="person">
+	<option>---</option>
+	<% persons.forEach(function(person) { %>
+	   <option value ="<%= person.id %>"> <%= person.name %> </option>
+	<% }) %>
+	</select>
+  
   <br><br>
   <input type="submit" value="submit">
 </form>

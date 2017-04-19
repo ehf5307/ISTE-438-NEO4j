@@ -7,7 +7,12 @@
 <h4>Movies Directed:</h4>
 <ul>
 <% directed.forEach(function(dir) { %>
-   <li><a href = "/movie/<%= dir.id %>" > <%= dir.title %> </a></li>
+   <li>
+   <a href = "/movie/<%= dir.id %>" > <%= dir.title %> </a>
+   	<form method="post" action="/director/<%= person.id %>/remove/<%= dir.id %>">
+	  <input type="submit" value="Remove">
+	</form>
+	</li>
 <% }) %>
 </ul>
 
@@ -15,7 +20,12 @@
 <h4>Movies Acted In:</h4>
 <ul>
 <% acted.forEach(function(act) { %>
-   <li><a href = "/movie/<%= act.id %>"><%= act.title %></a></li>
+   <li>
+   <a href = "/movie/<%= act.id %>"><%= act.title %></a>
+	<form method="post" action="/actor/<%= person.id %>/remove/<%= act.id %>">
+	  <input type="submit" value="Remove">
+	</form>
+	</li>
 <% }) %>
 </ul>
 

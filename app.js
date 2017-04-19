@@ -317,12 +317,82 @@ app.post('/person/:personID/update',function(req,res) {
 
 
 app.post('/movie/actor/add',function(req,res) {
-  var title = req.body.title;
-  var name = req.body.name;
+  var movieID = req.body.movie;
+  var personID = req.body.person;
   session
-    .run('MATCH (p:Person {name:{nameParam}}),(m:Movie{title:{titleParam}}) MERGE (p)-[:ACTED_IN]-(m) RETURN p,m', {titleParam:title,nameParam:name})
+    .run('MATCH (p:Person) ,(m:Movie) where ID(p) = ' +personID+ ' and ID(m) = ' +movieID+ ' MERGE (p)-[:ACTED_IN]-(m)  RETURN p,m')
     .then(function(result) {
       res.redirect('/');
+      session.close();
+    })
+    .catch(function(err) {
+      console.log(err)
+    });
+});
+
+app.post('/movie/director/add',function(req,res) {
+  var movieID = req.body.movie;
+  var personID = req.body.person;
+  session
+    .run('MATCH (p:Person) ,(m:Movie) where ID(p) = ' +personID+ ' and ID(m) = ' +movieID+ ' MERGE (p)-[:DIRECTED]-(m)  RETURN p,m')
+    .then(function(result) {
+      res.redirect('/');
+      session.close();
+    })
+    .catch(function(err) {
+      console.log(err)
+    });
+});
+
+app.post('/movie/:movieID/actor/remove/:personID',function(req,res) {
+  var movieID = req.params.movieID;
+  var personID = req.params.personID;
+  session
+    .run('MATCH (p)-[rel:ACTED_IN]-(m) where ID(p) = ' +personID+ ' and ID(m) = ' +movieID+ ' DELETE rel')
+    .then(function(result) {
+      res.redirect('/movie/'+movieID);
+      session.close();
+    })
+    .catch(function(err) {
+      console.log(err)
+    });
+});
+
+app.post('/movie/:movieID/director/remove/:personID',function(req,res) {
+  var movieID = req.params.movieID;
+  var personID = req.params.personID;
+  session
+    .run('MATCH (p)-[rel:DIRECTED]-(m) where ID(m) = ' +movieID+ ' and ID(p) = ' +personID+ ' DELETE rel')
+    .then(function(result) {
+      res.redirect('/movie/'+movieID);
+      session.close();
+    })
+    .catch(function(err) {
+      console.log(err)
+    });
+});
+
+app.post('/actor/:personID/remove/:movieID',function(req,res) {
+  var movieID = req.params.movieID;
+  var personID = req.params.personID;
+  session
+    .run('MATCH (p)-[rel:ACTED_IN]-(m) where ID(p) = ' +personID+ ' and ID(m) = ' +movieID+ ' DELETE rel')
+    .then(function(result) {
+      res.redirect('/person/'+personID);
+      session.close();
+    })
+    .catch(function(err) {
+      console.log(err)
+    });
+});
+
+app.post('/director/:personID/remove/:movieID',function(req,res) {
+  var movieID = req.params.movieID;
+  var personID = req.params.personID;
+  session
+    .run('MATCH (p)-[rel:DIRECTED]-(m) where ID(p) = ' +personID+ ' and ID(m) = ' +movieID+ ' DELETE rel')
+    .then(function(result) {
+      res.redirect('/person/'+personID);
       session.close();
     })
     .catch(function(err) {
