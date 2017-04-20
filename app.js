@@ -19,7 +19,7 @@ var driver = neo4j.driver('bolt://localhost',
     neo4j.auth.basic('neo4j','osboxes.org'));
 var session = driver.session();
 
-app.get('/',function(req,res) {
+function indexCtrl(req,res) {
   session
     .run('MATCH(n:Movie) RETURN n')
     .then(function(result) {
@@ -42,9 +42,20 @@ app.get('/',function(req,res) {
              });
            });
 
+		   var shortestMoviePaths = [];
+		   if(!!req.shortestMoviePaths){
+			   shortestMoviePaths = req.shortestMoviePaths;
+		   }
+		   var shortestPeoplePaths = [];
+		   if(!!req.shortestPeoplePaths){
+			   shortestPeoplePaths = req.shortestPeoplePaths;
+		   }
+		   
            res.render('index', {
              movies: movieArr,
-             persons: personArr
+             persons: personArr,
+			 shortestMoviePaths: shortestMoviePaths,
+			 shortestPeoplePaths: shortestPeoplePaths
            });
         })
         .catch(function(err) {
@@ -55,7 +66,9 @@ app.get('/',function(req,res) {
     .catch(function(err) {
        console.log(err);
     });
-});
+};
+
+app.get('/',indexCtrl); 
 
 app.get('/movies',function(req,res) {
   session
@@ -419,6 +432,55 @@ app.post('/person/add',function(req,res) {
       console.log(err)
     });
 });
+
+
+app.post('/shortest/movies', function(req, res, next){
+  var movie1 = req.body.movie1;
+  var movie2 = req.body.movie2;
+  session
+    .run('MATCH (m:Movie), (n:Movie), p = allShortestPaths((m)-[*..15]-(n)) where ID(m) = ' +movie1+ ' and ID(n) = ' +movie2+ ' RETURN p')
+    .then(function(result) {
+		pathArr = [];
+		result.records.forEach(function(record) {
+			pathArr.push({
+				segments: record._fields[0].segments,
+			});
+				
+      });
+		
+		req.shortestMoviePaths = pathArr;
+		
+      return next();
+	  session.close();
+    })
+    .catch(function(err) {
+      console.log(err)
+    });
+}, indexCtrl);
+
+app.post('/shortest/person', function(req, res, next){
+  var person1 = req.body.person1;
+  var person2 = req.body.person2;
+  session
+    .run('MATCH (m:Person), (n:Person), p = allShortestPaths((m)-[*..15]-(n)) where ID(m) = ' +person1+ ' and ID(n) = ' +person2+ ' RETURN p')
+    .then(function(result) {
+		pathArr = [];
+		result.records.forEach(function(record) {
+			pathArr.push({
+				segments: record._fields[0].segments,
+			});
+				
+      });
+		
+		req.shortestPeoplePaths = pathArr;
+		
+      return next();
+	  session.close();
+    })
+    .catch(function(err) {
+      console.log(err)
+    });
+}, indexCtrl);
 
 app.listen(3000);
 console.log('Server Started on Port 3000');
