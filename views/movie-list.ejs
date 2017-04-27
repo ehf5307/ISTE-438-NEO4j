@@ -1,28 +1,33 @@
-<%include menu %>
+<!-- /movies -->
+<% include head %>
+<% include menu %>
 
-<h3>Add Movie</h3>
-<form method="post" action="/movie/add">
-  <label>Movie Title</label><br>
-  <input type="text" name="title">
-  
-  <br>
-  <label>Year</label><br>
-  <input required type="text" name="year">
-  
-  <br>
-  <label>Tagline</label><br>
-  <input required type="text" name="tagline">
-  
-  <br><br>
-  <input required type="submit" value="submit">
-</form>
-
-
-<hr>
-
-<h3>Movies</h3>
-<ul>
-<% movies.forEach(function(movie) { %>
-   <li><a href = "/movie/<%= movie.id %>"><%= movie.title %></a></li>
-<% }) %>
-</ul>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+      <h3>Add Movie</h3>
+      <form method="post" action="/movie/add">
+          <label>Movie Title</label><br>
+          <input type="text" name="title">
+          <br>
+          <label>Year</label><br>
+          <input required type="text" name="year">
+          <br>
+          <label>Tagline</label><br>
+          <input required type="text" name="tagline">
+          <br>
+          <br>
+          <input required type="submit" value="submit">
+      </form>
+      <hr>
+      <h3>Movies</h3>
+      <ul>
+      <% movies.forEach(function(movie) { %>
+         <li><a href = "/movie/<%= movie.id %>"><%= movie.title %></a></li>
+      <% }) %>
+      </ul>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
+  </div>
+</div>

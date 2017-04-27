@@ -15,8 +15,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,'public')));
 
-var driver = neo4j.driver('bolt://localhost',
-    neo4j.auth.basic('neo4j','osboxes.org'));
+//var driver = neo4j.driver('bolt://localhost',
+ //   neo4j.auth.basic('neo4j','osboxes.org'));
+//because matt screwed up
 var session = driver.session();
 
 function indexCtrl(req,res) {
