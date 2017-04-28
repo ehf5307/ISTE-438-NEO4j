@@ -15,14 +15,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,'public')));
 
-//var driver = neo4j.driver('bolt://localhost',
- //   neo4j.auth.basic('neo4j','osboxes.org'));
+var driver = neo4j.driver('bolt://localhost',
+    neo4j.auth.basic('neo4j','osboxes.org'));
 //because matt screwed up
+//okay matt well that breaks it for me so what the hell?
 var session = driver.session();
 
 function indexCtrl(req,res) {
   session
-    .run('MATCH(n:Movie) RETURN n')
+    .run('MATCH(n:Movie) RETURN DISTINCT n ORDER BY n.title')
     .then(function(result) {
       var movieArr = [];
       result.records.forEach(function(record) {
@@ -33,7 +34,7 @@ function indexCtrl(req,res) {
       });
 
       session
-        .run('MATCH (n:Person) RETURN n')
+        .run('MATCH (n:Person) RETURN DISTINCT n ORDER BY n.name')
         .then(function(result2){
            var personArr = [];
            result2.records.forEach(function(record) {
