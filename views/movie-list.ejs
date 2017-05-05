@@ -22,11 +22,17 @@
       </form>
       <hr>
       <h3>Movies</h3>
-      <ul>
-      <% movies.forEach(function(movie) { %>
-         <li><a href = "/movie/<%= movie.id %>"><%= movie.title %></a></li>
-      <% }) %>
-      </ul>
+      <table class="table table-striped">
+        <tr>
+          <thead><th>Title</th><th>Year</th></thead>
+        </tr>
+        <% movies.forEach(function(movie){ %>
+          <tr>
+            <td><a href = "/movie/<%= movie.id %>"><%= movie.title %></a></td>
+            <td><%= movie.year %></td>
+          </tr>
+        <% }) %>
+        </table>
     </div>
     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
   </div>

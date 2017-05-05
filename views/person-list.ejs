@@ -22,11 +22,17 @@
       </form>
       <hr>
       <h3>Persons</h3>
-      <ul>
-      <% persons.forEach(function(person) { %>
-         <li><a href = "/person/<%= person.id %>"><%= person.name %></a></li>
-      <% }) %>
-      </ul>
+      <table class="table table-striped">
+        <tr>
+          <thead><th>Name</th><th>BirthYear</th></thead>
+        </tr>
+        <% persons.forEach(function(person){ %>
+          <tr>
+            <td><a href = "/person/<%= person.id %>"><%= person.name %></a></td>
+            <td><%= person.year %></td>
+          </tr>
+        <% }) %>
+        </table>
     </div>
     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
   </div>

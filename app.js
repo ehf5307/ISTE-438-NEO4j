@@ -15,10 +15,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,'public')));
 
+//var driver = neo4j.driver('bolt://localhost',
+//    neo4j.auth.basic('neo4j','osboxes.org'));
 var driver = neo4j.driver('bolt://localhost',
-    neo4j.auth.basic('neo4j','osboxes.org'));
+    neo4j.auth.basic('neo4j','CSkop991'));
+
 //because matt screwed up
-//okay matt well that breaks it for me so what the hell?
+//lol it's the password for the database on my machine
 var session = driver.session();
 
 function indexCtrl(req,res) {
@@ -105,7 +108,8 @@ app.get('/persons',function(req,res) {
       result.records.forEach(function(record) {
         personArr.push({
 		   id: record._fields[0].identity.low,
-		   name: record._fields[0].properties.name
+		   name: record._fields[0].properties.name,
+       born: record._fields[0].properties.born
         });
 		
       });
