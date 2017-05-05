@@ -23,3 +23,7 @@ In the original window (in the same directory), start our program by typing
 
 
 Open a browser and go to localhost:3000 to use the app
+
+Once in the app, you are able to add an actor to a movie, add a director to a movie, and find the shortest paths between actors and movies.
+
+You may also view all of the actors and movies by using the links at the top of the page. 
