@@ -15,10 +15,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,'public')));
 
-//var driver = neo4j.driver('bolt://localhost',
-//    neo4j.auth.basic('neo4j','osboxes.org'));
 var driver = neo4j.driver('bolt://localhost',
-    neo4j.auth.basic('neo4j','CSkop991'));
+    neo4j.auth.basic('neo4j','osboxes.org'));
+//var driver = neo4j.driver('bolt://localhost',
+//    neo4j.auth.basic('neo4j','CSkop991'));
 
 //because matt screwed up
 //lol it's the password for the database on my machine
